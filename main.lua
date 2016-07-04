@@ -4,6 +4,9 @@ mouseX = 0
 mouseY = 0
 mouseXclick = 0
 mouseYclick = 0
+mouseXlastClick = 0
+mouseYlastClick = 0
+distance = 0
 text = "Fer"
 mainFont = love.graphics.newFont(20)
 textObject = love.graphics.newText( mainFont, "Fer Object" )
@@ -30,19 +33,36 @@ function love.update(dt)
     elseif love.keyboard.isDown('down', 's') then
         --
     end
+    
 
     if love.mouse.isDown(1) then
-        mouseXclick = love.mouse.getX() 
-        mouseYclick = love.mouse.getY() 
+        mouseXlastClick = mouseXclick
+        mouseYlastClick = mouseYclick
+        
+         
     end
 
     mouseX = love.mouse.getX()
     mouseY = love.mouse.getY()
     textMouseCoords = mouseX .. " " .. mouseY
-    textMouseClick = "Last click: " .. mouseXclick .. " " .. mouseYclick
-
+    textMouseClick = "Actual click: " .. mouseXclick .. " " .. mouseYclick
+    textMouseLastClick = "Last click: " .. mouseXlastClick .. " " .. mouseYlastClick
 
 end
+
+
+function love.mousereleased(x, y, button, istouch)
+    if button == 1 then 
+        mouseXclick = love.mouse.getX() 
+        mouseYclick = love.mouse.getY()
+    end
+    ----
+    local x = mouseXlastClick - mouseXclick
+    local y = mouseYlastClick - mouseYclick
+    local x2y2 = x*x + y*y
+    distance = math.sqrt(x2y2)
+end
+
 
 function love.draw(dt)    
 
@@ -53,6 +73,10 @@ function love.draw(dt)
     love.graphics.print(textMouseCoords, 200, 200)
     love.graphics.setColor(255, 0, 255, 255)
     love.graphics.print(textMouseClick, 200, 300)
-
+    love.graphics.setColor(255, 255, 0, 255)
+    love.graphics.print(textMouseLastClick, 200, 400)
+    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
+    love.graphics.print(distance, 200, 420)
     
 end
