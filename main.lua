@@ -12,6 +12,8 @@ mainFont = love.graphics.newFont(20)
 textObject = love.graphics.newText( mainFont, "Fer Object" )
 textMouseCoords = ""
 
+image = love.graphics.newImage( 'assets/img/mapa.jpg' )
+
 function love.load(arg)
     --
 
@@ -66,6 +68,7 @@ end
 
 function love.draw(dt)    
 
+    love.graphics.draw(image, 0, 0)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.setFont(mainFont)
     love.graphics.print(text, 100, 200)
@@ -78,5 +81,6 @@ function love.draw(dt)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
     love.graphics.print(distance, 200, 420)
+
     
 end
