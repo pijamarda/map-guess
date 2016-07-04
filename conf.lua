@@ -2,8 +2,8 @@
 function love.conf(t)
 	t.tittle = "Map Guess"
 	t.version = "0.10.1"
-	t.window.width = 1222
-	t.window.height = 856
+
+	
 
 	--esto lo agrego yo porque si
 	t.modules.joysticj = false

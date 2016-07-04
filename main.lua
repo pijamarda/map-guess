@@ -7,15 +7,27 @@ mouseYclick = 0
 mouseXlastClick = 0
 mouseYlastClick = 0
 distance = 0
-text = "Fer"
+text = "Data: "
 mainFont = love.graphics.newFont(20)
 textObject = love.graphics.newText( mainFont, "Fer Object" )
 textMouseCoords = ""
 
-image = love.graphics.newImage( 'assets/img/mapa.jpg' )
+image = ""
+
+gameState = 0
+
+clickState = 0
 
 function love.load(arg)
     --
+    image = love.graphics.newImage( 'assets/img/mapa.jpg' )
+    local x = image:getWidth()
+    local y = image:getHeight()
+    love.window.setMode(x, y, {resizable=false, vsync=false})
+    mouseXclick = x / 2
+    mouseYclick = y / 2
+    mouseXlastClick = x / 2
+    mouseYlastClick = y / 2
 
 end
 
@@ -46,7 +58,7 @@ function love.update(dt)
 
     mouseX = love.mouse.getX()
     mouseY = love.mouse.getY()
-    textMouseCoords = mouseX .. " " .. mouseY
+    textMouseCoords = "Coords: " .. mouseX .. " " .. mouseY
     textMouseClick = "Actual click: " .. mouseXclick .. " " .. mouseYclick
     textMouseLastClick = "Last click: " .. mouseXlastClick .. " " .. mouseYlastClick
 
@@ -62,25 +74,29 @@ function love.mousereleased(x, y, button, istouch)
     local x = mouseXlastClick - mouseXclick
     local y = mouseYlastClick - mouseYclick
     local x2y2 = x*x + y*y
-    distance = math.sqrt(x2y2)
+    distance = "Distance: " .. round(math.sqrt(x2y2), 3)
+    round(10.33333, 2)
 end
 
 
 function love.draw(dt)    
 
     love.graphics.draw(image, 0, 0)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(0, 0, 0, 255)
     love.graphics.setFont(mainFont)
-    love.graphics.print(text, 100, 200)
-    love.graphics.setColor(0, 255, 255, 255)
-    love.graphics.print(textMouseCoords, 200, 200)
-    love.graphics.setColor(255, 0, 255, 255)
-    love.graphics.print(textMouseClick, 200, 300)
-    love.graphics.setColor(255, 255, 0, 255)
-    love.graphics.print(textMouseLastClick, 200, 400)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.print(text, 10, 20)    
+    love.graphics.print(textMouseCoords, 10, 40)    
+    love.graphics.print(textMouseClick, 10, 60)    
+    love.graphics.print(textMouseLastClick, 10, 80)
+    love.graphics.setColor(0, 0, 0, 255)
     love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
-    love.graphics.print(distance, 200, 420)
+    love.graphics.print(distance, 10, 100)
+     love.graphics.setColor(255, 255, 255, 255)
 
     
+end
+
+function round(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
 end
