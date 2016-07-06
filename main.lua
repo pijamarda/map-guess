@@ -1,5 +1,8 @@
 -- Map Guess
 
+
+
+
 mouseX = 0
 mouseY = 0
 mouseXclick = 0
@@ -18,12 +21,25 @@ gameState = 0
 
 clickState = 0
 
+-- testing PUSH
+
+push = require "push"
+
+
+--
+
 function love.load(arg)
     --
     image = love.graphics.newImage( 'assets/img/mapa.jpg' )
     local x = image:getWidth()
     local y = image:getHeight()
-    love.window.setMode(x, y, {resizable=false, vsync=false})
+    --love.window.setMode(x, y, {resizable=false, vsync=false})
+    local gameWidth, gameHeight = x, y --fixed game resolution
+    local windowWidth, windowHeight = love.window.getDesktopDimensions()
+    windowWidth, windowHeight = windowWidth*.7, windowHeight*.7 --make the window a bit smaller than the screen itself
+
+    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
+    --
     mouseXclick = x / 2
     mouseYclick = y / 2
     mouseXlastClick = x / 2
@@ -75,26 +91,28 @@ function love.mousereleased(x, y, button, istouch)
     local y = mouseYlastClick - mouseYclick
     local x2y2 = x*x + y*y
     distance = "Distance: " .. round(math.sqrt(x2y2), 3)
-    round(10.33333, 2)
+    
 end
 
 
 function love.draw(dt)    
-
-    love.graphics.draw(image, 0, 0)
-    love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.setFont(mainFont)
-    love.graphics.print(text, 10, 20)    
-    love.graphics.print(textMouseCoords, 10, 40)    
-    love.graphics.print(textMouseClick, 10, 60)    
-    love.graphics.print(textMouseLastClick, 10, 80)
-    love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
-    love.graphics.print(distance, 10, 100)
-     love.graphics.setColor(255, 255, 255, 255)
+    push:apply("start")
+        love.graphics.draw(image, 0, 0)
+        love.graphics.setColor(0, 0, 0, 255)
+        love.graphics.setFont(mainFont)
+        love.graphics.print(text, 10, 20)    
+        love.graphics.print(textMouseCoords, 10, 40)    
+        love.graphics.print(textMouseClick, 10, 60)    
+        love.graphics.print(textMouseLastClick, 10, 80)
+        love.graphics.setColor(0, 0, 0, 255)
+        love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
+        love.graphics.print(distance, 10, 100)
+        love.graphics.setColor(255, 255, 255, 255)
+    push:apply("end")
 
     
 end
+
 
 function round(num, idp)
   local mult = 10^(idp or 0)
