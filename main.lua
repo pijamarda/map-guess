@@ -66,14 +66,19 @@ function love.update(dt)
     
 
     if love.mouse.isDown(1) then
-        mouseXlastClick = mouseXclick
-        mouseYlastClick = mouseYclick         
+        local mX, mY = love.mouse.getPosition()
+        mX, mY = push:toGame(mX, mY)
+        if mX and mY then
+            mouseXlastClick = mouseXclick
+            mouseYlastClick = mouseYclick    
+        end    
     end
 
     local mX, mY = love.mouse.getPosition()
     mX, mY = push:toGame(mX, mY)
     if mX and mY then
         mouseX, mouseY = mX, mY
+    end
     
     if mouseX and mouseY then
         textMouseCoords = "Coords: " .. mouseX .. " " .. mouseY
@@ -114,9 +119,7 @@ function love.draw(dt)
         love.graphics.line(mouseXlastClick, mouseYlastClick, mouseXclick, mouseYclick)
         love.graphics.print(distance, 10, 100)
         love.graphics.setColor(255, 255, 255, 255)
-    push:apply("end")
-
-    
+    push:apply("end")    
 end
 
 
