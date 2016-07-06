@@ -67,15 +67,20 @@ function love.update(dt)
 
     if love.mouse.isDown(1) then
         mouseXlastClick = mouseXclick
-        mouseYlastClick = mouseYclick
-        
-         
+        mouseYlastClick = mouseYclick         
     end
 
-    mouseX = love.mouse.getX()
-    mouseY = love.mouse.getY()
-    textMouseCoords = "Coords: " .. mouseX .. " " .. mouseY
-    textMouseClick = "Actual click: " .. mouseXclick .. " " .. mouseYclick
+    local mX, mY = love.mouse.getPosition()
+    mX, mY = push:toGame(mX, mY)
+    if mX and mY then
+        mouseX, mouseY = mX, mY
+    
+    if mouseX and mouseY then
+        textMouseCoords = "Coords: " .. mouseX .. " " .. mouseY
+    end
+    if mouseXclick and mouseYclick then
+        textMouseClick = "Actual click: " .. mouseXclick .. " " .. mouseYclick
+    end
     textMouseLastClick = "Last click: " .. mouseXlastClick .. " " .. mouseYlastClick
 
 end
@@ -83,15 +88,16 @@ end
 
 function love.mousereleased(x, y, button, istouch)
     if button == 1 then 
-        mouseXclick = love.mouse.getX() 
-        mouseYclick = love.mouse.getY()
-    end
-    ----
-    local x = mouseXlastClick - mouseXclick
-    local y = mouseYlastClick - mouseYclick
-    local x2y2 = x*x + y*y
-    distance = "Distance: " .. round(math.sqrt(x2y2), 3)
-    
+        local mX, mY = love.mouse.getPosition()
+        mX, mY = push:toGame(mX, mY)
+        if mX and mY then
+            mouseXclick, mouseYclick = mX, mY
+            local x = mouseXlastClick - mouseXclick
+            local y = mouseYlastClick - mouseYclick
+            local x2y2 = x*x + y*y
+            distance = "Distance: " .. round(math.sqrt(x2y2), 3)
+        end
+    end    
 end
 
 
